@@ -20,11 +20,11 @@ inputs:
 
 runs:
   using: "docker"
-  image: "mustachecase/zanadir:latest"  # Your prebuilt Docker image
+  image: "docker://mustachecase/zanadir:latest"
   args:
     - "scan"
     - "--dir"
-    - "${{ inputs.dir }}"  # Use the input `dir` here
+    - "${{ inputs.dir }}"
     - "--excluded-categories"
     - "${{ inputs.excluded-categories }}"
     - "--output"
