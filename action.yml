@@ -1,41 +1,35 @@
-name: 'Zanadir Scan Action'
-description: 'Scan a GitHub repository using the Zanadir Docker image'
-author: 'Your Name or Org'
-branding:
-  icon: 'shield'
-  color: 'purple'
+name: Zanadir Action
+description: Scan your GitHub repository using Zanadir tool
 
 inputs:
   dir:
     description: 'Path to the GitHub repository directory (required)'
     required: true
   excluded-categories:
-    description: 'Comma-separated list of excluded categories'
+    description: 'List of excluded categories (optional)'
     required: false
-    default: ''
   enforce:
-    description: 'Fail the CI if at least one rule is met'
+    description: 'Fails the CI process when at least one rule is met (optional)'
     required: false
-    default: 'false'
   debug:
-    description: 'Run the tool in debug mode'
+    description: 'Run the tool using debug mode (optional)'
     required: false
-    default: 'false'
   output:
-    description: 'Output format: table or json'
+    description: 'Output format of the tool (Table, Json) (optional)'
     required: false
-    default: 'table'
 
 runs:
-  using: 'docker'
-  image: 'docker://mustachecase/zanadir:0.0.2'
+  using: "docker"
+  image: "mustachecase/zanadir:latest"  # Your prebuilt Docker image
   args:
-    - scan
-    - --dir
-    - ${{ inputs.dir }}
-    - --excluded-categories
-    - ${{ inputs.excluded-categories }}
-    - --output
-    - ${{ inputs.output }}
-    - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
-    - ${{ inputs.debug == 'true' && '--debug' || '' }}
+    - "scan"
+    - "--dir"
+    - "${{ github.workspace }}"  # Mounts the GitHub repo as input dir
+    - "--excluded-categories"
+    - "${{ inputs.excluded-categories }}"
+    - "--output"
+    - "${{ inputs.output }}"
+    - "--debug"
+    - "${{ inputs.debug }}"
+    - "--enforce"
+    - "${{ inputs.enforce }}"
