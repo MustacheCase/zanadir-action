@@ -1,0 +1,41 @@
+name: 'Zanadir Scan Action'
+description: 'Scan a GitHub repository using the Zanadir Docker image'
+author: 'Your Name or Org'
+branding:
+  icon: 'shield'
+  color: 'purple'
+
+inputs:
+  dir:
+    description: 'Path to the GitHub repository directory (required)'
+    required: true
+  excluded-categories:
+    description: 'Comma-separated list of excluded categories'
+    required: false
+    default: ''
+  enforce:
+    description: 'Fail the CI if at least one rule is met'
+    required: false
+    default: 'false'
+  debug:
+    description: 'Run the tool in debug mode'
+    required: false
+    default: 'false'
+  output:
+    description: 'Output format: table or json'
+    required: false
+    default: 'table'
+
+runs:
+  using: 'docker'
+  image: 'docker://mustachecase/zanadir:0.0.2'
+  args:
+    - scan
+    - --dir
+    - ${{ inputs.dir }}
+    - --excluded-categories
+    - ${{ inputs.excluded-categories }}
+    - --output
+    - ${{ inputs.output }}
+    - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
+    - ${{ inputs.debug == 'true' && '--debug' || '' }}
