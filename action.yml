@@ -1,43 +1,22 @@
-name: 'Zanadir Scan Action'
-description: 'Scan a GitHub repository using the Zanadir Docker image'
-author: 'Your Name or Org'
-branding:
-  icon: 'shield'
-  color: 'purple'
-
-inputs:
-  dir:
-    description: 'Path to the GitHub repository directory (required)'
-    required: true
-  excluded-categories:
-    description: 'Comma-separated list of excluded categories'
-    required: false
-    default: ''
-  enforce:
-    description: 'Fail the CI if at least one rule is met'
-    required: false
-    default: 'false'
-  debug:
-    description: 'Run the tool in debug mode'
-    required: false
-    default: 'false'
-  output:
-    description: 'Output format: table or json'
-    required: false
-    default: 'table'
-
-runs:
-  using: 'docker'
-  image: 'docker://mustachecase/zanadir:0.0.2'
-  args:
-    - scan
-    - --dir
-    - ${{ inputs.dir }}
-    - --excluded-categories
-    - ${{ inputs.excluded-categories }}
-    - --output
-    - ${{ inputs.output }}
-    - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
-    - ${{ inputs.debug == 'true' && '--debug' || '' }}
-  volume:
-          - /github/workspace:/github/workspace  # Mount the GitHub workspace into the Docker container
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout zanadir-action repository
+        uses: actions/checkout@v4
+        
+      - name: Check container directory contents (debug)
+        uses: docker://mustachecase/zanadir:0.0.2
+        with:
+          args: ls -R /rules /storage
+        
+      - name: Run Zanadir Scan with Docker
+        uses: docker://mustachecase/zanadir:0.0.2
+        with:
+          args: |
+            scan
+            --dir /github/workspace/${{ inputs.dir }}
+            --excluded-categories ${{ inputs.excluded-categories }}
+            --output ${{ inputs.output }}
+            ${{ inputs.enforce == 'true' && '--enforce' || '' }}
+            ${{ inputs.debug == 'true' && '--debug' || '' }}
