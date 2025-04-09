@@ -24,7 +24,7 @@ runs:
   args:
     - "scan"
     - "--dir"
-    - "${{ github.workspace }}"  # Mounts the GitHub repo as input dir
+    - "${{ inputs.dir }}"  # Use the input `dir` here
     - "--excluded-categories"
     - "${{ inputs.excluded-categories }}"
     - "--output"
