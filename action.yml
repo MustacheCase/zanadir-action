@@ -39,3 +39,5 @@ runs:
     - ${{ inputs.output }}
     - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
     - ${{ inputs.debug == 'true' && '--debug' || '' }}
+  volume:
+          - /github/workspace:/github/workspace  # Mount the GitHub workspace into the Docker container
