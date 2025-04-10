@@ -1,27 +1,35 @@
+name: Zanadir Action
+description: Scan your GitHub repository using Zanadir tool
+
+inputs:
+  dir:
+    description: 'Path to the GitHub repository directory (required)'
+    required: true
+  excluded-categories:
+    description: 'List of excluded categories (optional)'
+    required: false
+  enforce:
+    description: 'Fails the CI process when at least one rule is met (optional)'
+    required: false
+  debug:
+    description: 'Run the tool using debug mode (optional)'
+    required: false
+  output:
+    description: 'Output format of the tool (Table, Json) (optional)'
+    required: false
+
 runs:
-  using: "composite"
-  steps:
-    - run: |
-        ARGS="scan --dir /repo"
-
-        if [ -n "${{ inputs.excluded-categories }}" ]; then
-          ARGS="$ARGS --excluded-categories '${{ inputs.excluded-categories }}'"
-        fi
-
-        if [ "${{ inputs.output }}" = "json" ] || [ "${{ inputs.output }}" = "table" ]; then
-          ARGS="$ARGS --output '${{ inputs.output }}'"
-        fi
-
-        if [ "${{ inputs.debug }}" = "true" ]; then
-          ARGS="$ARGS --debug"
-        fi
-
-        if [ "${{ inputs.enforce }}" = "true" ]; then
-          ARGS="$ARGS --enforce"
-        fi
-
-        docker run --rm \
-          -v "${{ github.workspace }}:/repo" \
-          -w /repo \
-          mustachecase/zanadir:latest $ARGS
-      shell: bash
+  using: "docker"
+  image: "docker://mustachecase/zanadir:latest"
+  args:
+    - "scan"
+    - "--dir"
+    - "${{ inputs.dir }}"
+    - "--excluded-categories"
+    - "${{ inputs.excluded-categories }}"
+    - "--output"
+    - "${{ inputs.output }}"
+    - "--debug"
+    - "${{ inputs.debug }}"
+    - "--enforce"
+    - "${{ inputs.enforce }}"
