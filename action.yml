@@ -2,7 +2,7 @@ runs:
   using: "composite"
   steps:
     - run: |
-        ARGS="scan --dir '/repo'"
+        ARGS="scan --dir /repo"
 
         if [ -n "${{ inputs.excluded-categories }}" ]; then
           ARGS="$ARGS --excluded-categories '${{ inputs.excluded-categories }}'"
@@ -22,5 +22,6 @@ runs:
 
         docker run --rm \
           -v "${{ github.workspace }}:/repo" \
+          -w /repo \
           mustachecase/zanadir:latest $ARGS
       shell: bash
