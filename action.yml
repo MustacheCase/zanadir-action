@@ -26,7 +26,7 @@ runs:
         set -e
 
         # Initialize ARGS with the scan command and the dynamically set directory
-        ARGS="scan --dir '${{ inputs.dir }}'"
+        ARGS="scan --dir '/repo/${{ inputs.dir }}'"
 
         # Add excluded categories if provided
         if [ -n "${{ inputs.excluded-categories }}" ]; then
@@ -55,6 +55,6 @@ runs:
 
         # Run the docker container with the dynamically constructed args
         docker run --rm \
-          -v "${{ inputs.dir }}:/repo" \
+          -v "${{ github.workspace }}:/repo" \
           -w /repo \
           mustachecase/zanadir:latest $ARGS
