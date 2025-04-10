@@ -29,19 +29,7 @@ runs:
     - "${{ inputs.excluded-categories }}"
     - "--output"
     - "${{ inputs.output }}"
-
-  # Use a shell script to conditionally add --debug and --enforce
-  steps:
-    - name: Run Zanadir scan with optional flags
-      run: |
-        args="--dir ${{ inputs.dir }} --excluded-categories ${{ inputs.excluded-categories }} --output ${{ inputs.output }}"
-        
-        if [[ "${{ inputs.debug }}" != "false" && "${{ inputs.debug }}" != "" ]]; then
-          args="$args --debug"
-        fi
-        
-        if [[ "${{ inputs.enforce }}" != "false" && "${{ inputs.enforce }}" != "" ]]; then
-          args="$args --enforce"
-        fi
-
-        docker run --rm mustachecase/zanadir:latest scan $args
+    - "--debug"
+    - "${{ inputs.debug }}"
+    - "--enforce"
+    - "${{ inputs.enforce }}"
