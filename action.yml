@@ -29,7 +29,9 @@ runs:
     - "${{ inputs.excluded-categories }}"
     - "--output"
     - "${{ inputs.output }}"
-    - "--debug"
-    - "${{ inputs.debug }}"
-    - "--enforce"
-    - "${{ inputs.enforce }}"
+
+    # Add --debug and --enforce only if they are true
+    - ${{ if inputs.debug != 'false' }}:
+      - "--debug"
+    - ${{ if inputs.enforce != 'false' }}:
+      - "--enforce"
