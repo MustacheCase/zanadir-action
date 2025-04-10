@@ -8,7 +8,7 @@ runs:
           ARGS="$ARGS --excluded-categories '${{ inputs.excluded-categories }}'"
         fi
 
-        if [ -n "${{ inputs.output }}" ]; then
+        if [ "${{ inputs.output }}" = "json" ] || [ "${{ inputs.output }}" = "table" ]; then
           ARGS="$ARGS --output '${{ inputs.output }}'"
         fi
 
