@@ -19,17 +19,28 @@ inputs:
     required: false
 
 runs:
-  using: "docker"
-  image: "docker://mustachecase/zanadir:latest"
-  args:
-    - "scan"
-    - "--dir"
-    - "${{ inputs.dir }}"
-    - "--excluded-categories"
-    - "${{ inputs.excluded-categories }}"
-    - "--output"
-    - "${{ inputs.output }}"
-    - "--debug"
-    - "${{ inputs.debug }}"
-    - "--enforce"
-    - "${{ inputs.enforce }}"
+  using: "composite"
+  steps:
+    - run: |
+        ARGS="scan --dir '${{ inputs.dir }}'"
+
+        if [ -n "${{ inputs.excluded-categories }}" ]; then
+          ARGS="$ARGS --excluded-categories '${{ inputs.excluded-categories }}'"
+        fi
+
+        if [ -n "${{ inputs.output }}" ]; then
+          ARGS="$ARGS --output '${{ inputs.output }}'"
+        fi
+
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          ARGS="$ARGS --debug"
+        fi
+
+        if [ "${{ inputs.enforce }}" = "true" ]; then
+          ARGS="$ARGS --enforce"
+        fi
+
+        docker run --rm \
+          -v "${{ github.workspace }}:/repo" \
+          mustachecase/zanadir:latest $ARGS
+      shell: bash
