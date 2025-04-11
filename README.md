@@ -28,7 +28,7 @@ jobs:
       - name: Scan repository with Zanadir
         uses: mustachecase/zanadir-action@v1
         with:
-          dir: ./
+          dir: .
           debug: true
           enforce: false
           output: table
