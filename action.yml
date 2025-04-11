@@ -19,17 +19,28 @@ inputs:
     required: false
 
 runs:
-  using: "docker"
-  image: "docker://mustachecase/zanadir:latest"
-  args:
-    - "scan"
-    - "--dir"
-    - "${{ inputs.dir }}"
-    - "--excluded-categories"
-    - "${{ inputs.excluded-categories }}"
-    - "--output"
-    - "${{ inputs.output }}"
-    - "--debug"
-    - "${{ inputs.debug }}"
-    - "--enforce"
-    - "${{ inputs.enforce }}"
+  using: "composite"
+  steps:
+    - name: Run Zanadir Scan
+      shell: bash
+      run: |
+        cmd="zanadir scan --dir '${{ inputs.dir }}'"
+
+        if [ -n "${{ inputs.excluded-categories }}" ]; then
+          cmd="$cmd --excluded-categories '${{ inputs.excluded-categories }}'"
+        fi
+
+        if [ -n "${{ inputs.output }}" ]; then
+          cmd="$cmd --output '${{ inputs.output }}'"
+        fi
+
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          cmd="$cmd --debug"
+        fi
+
+        if [ "${{ inputs.enforce }}" = "true" ]; then
+          cmd="$cmd --enforce"
+        fi
+
+        echo "Running: $cmd"
+        eval "$cmd"
