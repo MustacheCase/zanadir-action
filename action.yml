@@ -20,7 +20,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:latest"
+  image: "docker://mustachecase/zanadir:0.0.3"
   args:
     - "scan"
     - "--dir"
