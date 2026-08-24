@@ -9,18 +9,30 @@ inputs:
     description: 'List of excluded categories (optional)'
     required: false
   enforce:
-    description: 'Fails the CI process when at least one rule is met (optional)'
+    description: 'Fails the CI process when any category is uncovered (optional)'
+    required: false
+  fail-on:
+    description: 'Fail only when these specific categories are uncovered (optional)'
+    required: false
+  baseline:
+    description: 'Path to a baseline file of already-accepted gaps (optional)'
+    required: false
+  write-baseline:
+    description: 'Write the current uncovered categories to the baseline file and exit successfully (optional)'
     required: false
   debug:
     description: 'Run the tool using debug mode (optional)'
     required: false
   output:
-    description: 'Output format of the tool (Table, Json) (optional)'
+    description: 'Output format of the tool (table, json, sarif) (optional)'
+    required: false
+  output-file:
+    description: 'Write the report to this file instead of stdout (optional)'
     required: false
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.1.4"
+  image: "docker://mustachecase/zanadir:0.2.0"
   args:
     - "scan"
     - "--dir"
@@ -29,5 +41,12 @@ runs:
     - ${{ inputs.excluded-categories }}
     - ${{ inputs.output && '--output' }}
     - ${{ inputs.output }}
+    - ${{ inputs.output-file && '--output-file' }}
+    - ${{ inputs.output-file }}
+    - ${{ inputs.fail-on && '--fail-on' }}
+    - ${{ inputs.fail-on }}
+    - ${{ inputs.baseline && '--baseline' }}
+    - ${{ inputs.baseline }}
     - ${{ inputs.debug == 'true' && '--debug' || '' }}
     - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
+    - ${{ inputs.write-baseline == 'true' && '--write-baseline' || '' }}
