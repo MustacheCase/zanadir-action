@@ -11,7 +11,7 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.9
+- uses: mustachecase/zanadir-action@v1.10
   with:
     dir: .
 ```
@@ -23,8 +23,9 @@ missing, with concrete suggestions for each.
 | Input | Description | Default |
 |---|---|---|
 | `dir` | Path to the repository directory (**required**) | — |
-| `output` | Output format: `table`, `json` or `sarif` | `table` |
+| `output` | Output format: `table`, `json`, `sarif` or `markdown` | `table` |
 | `output-file` | Write the report to this file instead of stdout | stdout |
+| `badge` | Write a shields.io endpoint badge of the coverage score to this path | none |
 | `excluded-categories` | Comma-separated categories to skip entirely | none |
 | `enforce` | Fail the job when any category is uncovered | `false` |
 | `fail-on` | Fail only when these specific categories are uncovered | none |
@@ -38,7 +39,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.9
+- uses: mustachecase/zanadir-action@v1.10
   with:
     dir: .
     output: sarif
@@ -58,7 +59,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.9
+- uses: mustachecase/zanadir-action@v1.10
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -68,7 +69,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.9
+- uses: mustachecase/zanadir-action@v1.10
   with:
     dir: .
     enforce: true
@@ -81,9 +82,9 @@ Generate that file once with `write-baseline: true`, or locally with
 ## Categories
 
 SCA · Secrets Detection · License Compliance · End Of Life · Coverage · Linter ·
-Performance Testing · Unit Tests · SAST · IaC Security
+Performance Testing · Unit Tests · SAST · IaC Security · Supply Chain
 
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.9` runs `zanadir:0.3.0`.
+changes when you bump it. `v1.10` runs `zanadir:0.4.0`.
