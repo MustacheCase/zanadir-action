@@ -24,15 +24,18 @@ inputs:
     description: 'Run the tool using debug mode (optional)'
     required: false
   output:
-    description: 'Output format of the tool (table, json, sarif) (optional)'
+    description: 'Output format of the tool (table, json, sarif, markdown) (optional)'
     required: false
   output-file:
     description: 'Write the report to this file instead of stdout (optional)'
     required: false
+  badge:
+    description: 'Write a shields.io endpoint badge of the coverage score to this path (optional)'
+    required: false
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.3.0"
+  image: "docker://mustachecase/zanadir:0.4.0"
   args:
     - "scan"
     - "--dir"
@@ -43,6 +46,8 @@ runs:
     - ${{ inputs.output }}
     - ${{ inputs.output-file && '--output-file' }}
     - ${{ inputs.output-file }}
+    - ${{ inputs.badge && '--badge' }}
+    - ${{ inputs.badge }}
     - ${{ inputs.fail-on && '--fail-on' }}
     - ${{ inputs.fail-on }}
     - ${{ inputs.baseline && '--baseline' }}
