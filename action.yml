@@ -1,5 +1,8 @@
 name: Zanadir Action
-description: Scan your GitHub repository using Zanadir tool
+description: "Grade your CI pipeline: find missing SAST, SCA, secrets and SBOM checks, and controls wired so they cannot fail a build"
+branding:
+  icon: shield
+  color: purple
 
 inputs:
   dir:
@@ -35,7 +38,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.4.0"
+  image: "docker://mustachecase/zanadir:0.5.0"
   args:
     - "scan"
     - "--dir"

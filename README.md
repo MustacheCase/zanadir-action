@@ -11,12 +11,32 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.10
+- uses: mustachecase/zanadir-action@v1.11
   with:
     dir: .
 ```
 
 `fetch-depth: 0` matters — zanadir inspects the repository as a git checkout.
+
+## Effectiveness
+
+Presence is not protection. A scanner wired up so it can never fail a build
+leaves a repository worse off than one with no scanner, because everybody
+believes the control is there. The action reports those too:
+
+```
+3 covered categories are weakened:
+  Linter is partial (.github/workflows/pushonly.yml)
+  SCA is advisory (.github/workflows/nightly.yml)
+  Secrets Detection is advisory (.github/workflows/ci.yml)
+```
+
+`continue-on-error: true`, a scanner that only runs on a schedule, a linter
+that never sees a pull request, `trivy --exit-code 0`, `soft_fail: true` - all
+of them used to count as covered.
+
+This is informational: a weakened control never fails the job. `enforce` still
+acts only on categories with no tooling at all.
 
 ## Inputs
 
@@ -39,7 +59,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.10
+- uses: mustachecase/zanadir-action@v1.11
   with:
     dir: .
     output: sarif
@@ -59,7 +79,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.10
+- uses: mustachecase/zanadir-action@v1.11
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -69,7 +89,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.10
+- uses: mustachecase/zanadir-action@v1.11
   with:
     dir: .
     enforce: true
@@ -87,4 +107,4 @@ Performance Testing · Unit Tests · SAST · IaC Security · Supply Chain
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.10` runs `zanadir:0.4.0`.
+changes when you bump it. `v1.11` runs `zanadir:0.5.0`.
