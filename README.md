@@ -11,7 +11,7 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.11
+- uses: mustachecase/zanadir-action@v1.12
   with:
     dir: .
 ```
@@ -35,8 +35,17 @@ believes the control is there. The action reports those too:
 that never sees a pull request, `trivy --exit-code 0`, `soft_fail: true` - all
 of them used to count as covered.
 
-This is informational: a weakened control never fails the job. `enforce` still
-acts only on categories with no tooling at all.
+`continue-on-error: true`, a scanner that only runs on a schedule, a linter
+that never sees a pull request, `trivy --exit-code 0`, `soft_fail: true`,
+GitLab's `allow_failure` and `when: manual` — all of them used to count as
+covered.
+
+A weakened control does not fail the job unless you set `fail-on-weakened`.
+`enforce` on its own still acts only on categories with no tooling at all, so
+upgrading does not start failing builds that passed.
+
+Dependabot and Renovate are read from their configuration files and graded
+advisory: they open pull requests rather than failing builds.
 
 ## Inputs
 
@@ -49,6 +58,7 @@ acts only on categories with no tooling at all.
 | `excluded-categories` | Comma-separated categories to skip entirely | none |
 | `enforce` | Fail the job when any category is uncovered | `false` |
 | `fail-on` | Fail only when these specific categories are uncovered | none |
+| `fail-on-weakened` | Also fail when a category has tooling that cannot fail a build | `false` |
 | `baseline` | Path to a file of already-accepted gaps | none |
 | `write-baseline` | Record the current gaps as accepted, then exit successfully | `false` |
 | `debug` | Verbose logging | `false` |
@@ -59,7 +69,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.11
+- uses: mustachecase/zanadir-action@v1.12
   with:
     dir: .
     output: sarif
@@ -79,7 +89,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.11
+- uses: mustachecase/zanadir-action@v1.12
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -89,7 +99,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.11
+- uses: mustachecase/zanadir-action@v1.12
   with:
     dir: .
     enforce: true
@@ -104,7 +114,11 @@ Generate that file once with `write-baseline: true`, or locally with
 SCA · Secrets Detection · License Compliance · End Of Life · Coverage · Linter ·
 Performance Testing · Unit Tests · SAST · IaC Security · Supply Chain
 
+A category with nothing to scan is left out of the score rather than suggested
+— a repository with no Terraform, Helm chart, Kubernetes manifest or
+Dockerfile is scored out of ten, not eleven, and the report says so.
+
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.11` runs `zanadir:0.5.0`.
+changes when you bump it. `v1.12` runs `zanadir:0.6.0`.

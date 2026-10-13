@@ -17,6 +17,9 @@ inputs:
   fail-on:
     description: 'Fail only when these specific categories are uncovered (optional)'
     required: false
+  fail-on-weakened:
+    description: 'Also fail when a category has tooling that cannot fail a build (optional)'
+    required: false
   baseline:
     description: 'Path to a baseline file of already-accepted gaps (optional)'
     required: false
@@ -38,7 +41,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.5.0"
+  image: "docker://mustachecase/zanadir:0.6.0"
   args:
     - "scan"
     - "--dir"
@@ -58,3 +61,4 @@ runs:
     - ${{ inputs.debug == 'true' && '--debug' || '' }}
     - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
     - ${{ inputs.write-baseline == 'true' && '--write-baseline' || '' }}
+    - ${{ inputs.fail-on-weakened == 'true' && '--fail-on-weakened' || '' }}
