@@ -11,7 +11,7 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.13
+- uses: mustachecase/zanadir-action@v1.14
   with:
     dir: .
 ```
@@ -62,6 +62,35 @@ advisory: they open pull requests rather than failing builds.
 | `baseline` | Path to a file of already-accepted gaps | none |
 | `write-baseline` | Record the current gaps as accepted, then exit successfully | `false` |
 | `debug` | Verbose logging | `false` |
+| `config` | YAML file of settings and custom rules; an input set here wins over the file | none |
+
+## Config file and custom rules
+
+Keep settings in the repository instead of in every workflow, and teach
+zanadir about in-house scanners it would otherwise report as missing:
+
+```yaml
+# .zanadir.yml
+excluded-categories: [Performance Testing]
+fail-on-weakened: true
+rules:
+  - id: acme-scan
+    applyOn: [Job.Run]
+    categories: [SAST]
+    regex: '\bacme-scan\b'
+```
+
+```yaml
+- uses: mustachecase/zanadir-action@v1.14
+  with:
+    dir: .
+    config: .zanadir.yml
+```
+
+An unknown key, a misspelt category or a custom rule reusing a built-in `id`
+fails the step. See the
+[zanadir README](https://github.com/MustacheCase/zanadir#config-file) for every
+key.
 
 ## Publishing to GitHub code scanning
 
@@ -69,7 +98,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.13
+- uses: mustachecase/zanadir-action@v1.14
   with:
     dir: .
     output: sarif
@@ -89,7 +118,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.13
+- uses: mustachecase/zanadir-action@v1.14
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -99,7 +128,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.13
+- uses: mustachecase/zanadir-action@v1.14
   with:
     dir: .
     enforce: true
@@ -124,4 +153,4 @@ format. The report says which.
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.13` runs `zanadir:0.7.0`.
+changes when you bump it. `v1.14` runs `zanadir:0.8.0`.

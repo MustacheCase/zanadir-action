@@ -38,10 +38,13 @@ inputs:
   badge:
     description: 'Write a shields.io endpoint badge of the coverage score to this path (optional)'
     required: false
+  config:
+    description: 'Read settings and custom rules from this YAML file; inputs given here win (optional)'
+    required: false
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.7.0"
+  image: "docker://mustachecase/zanadir:0.8.0"
   args:
     - "scan"
     - "--dir"
@@ -54,6 +57,8 @@ runs:
     - ${{ inputs.output-file }}
     - ${{ inputs.badge && '--badge' }}
     - ${{ inputs.badge }}
+    - ${{ inputs.config && '--config' }}
+    - ${{ inputs.config }}
     - ${{ inputs.fail-on && '--fail-on' }}
     - ${{ inputs.fail-on }}
     - ${{ inputs.baseline && '--baseline' }}
