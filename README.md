@@ -11,7 +11,7 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.12
+- uses: mustachecase/zanadir-action@v1.13
   with:
     dir: .
 ```
@@ -69,7 +69,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.12
+- uses: mustachecase/zanadir-action@v1.13
   with:
     dir: .
     output: sarif
@@ -89,7 +89,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.12
+- uses: mustachecase/zanadir-action@v1.13
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -99,7 +99,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.12
+- uses: mustachecase/zanadir-action@v1.13
   with:
     dir: .
     enforce: true
@@ -112,13 +112,16 @@ Generate that file once with `write-baseline: true`, or locally with
 ## Categories
 
 SCA · Secrets Detection · License Compliance · End Of Life · Coverage · Linter ·
-Performance Testing · Unit Tests · SAST · IaC Security · Supply Chain
+Performance Testing · Unit Tests · SAST · IaC Security · Supply Chain ·
+Workflow Security
 
 A category with nothing to scan is left out of the score rather than suggested
 — a repository with no Terraform, Helm chart, Kubernetes manifest or
-Dockerfile is scored out of ten, not eleven, and the report says so.
+Dockerfile is scored without IaC Security, and one with no GitHub Actions
+without Workflow Security, since every tool in that category reads that
+format. The report says which.
 
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.12` runs `zanadir:0.6.0`.
+changes when you bump it. `v1.13` runs `zanadir:0.7.0`.
