@@ -6,7 +6,7 @@ branding:
 
 inputs:
   dir:
-    description: 'Path to the GitHub repository directory (required)'
+    description: 'Path to the repository directory (required)'
     required: true
   excluded-categories:
     description: 'List of excluded categories (optional)'
@@ -44,7 +44,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.8.0"
+  image: "docker://mustachecase/zanadir:0.9.0"
   args:
     - "scan"
     - "--dir"
