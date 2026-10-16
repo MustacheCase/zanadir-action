@@ -11,7 +11,7 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.14
+- uses: mustachecase/zanadir-action@v1.15
   with:
     dir: .
 ```
@@ -81,7 +81,7 @@ rules:
 ```
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.14
+- uses: mustachecase/zanadir-action@v1.15
   with:
     dir: .
     config: .zanadir.yml
@@ -98,7 +98,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.14
+- uses: mustachecase/zanadir-action@v1.15
   with:
     dir: .
     output: sarif
@@ -118,7 +118,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.14
+- uses: mustachecase/zanadir-action@v1.15
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -128,7 +128,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.14
+- uses: mustachecase/zanadir-action@v1.15
   with:
     dir: .
     enforce: true
@@ -153,4 +153,4 @@ format. The report says which.
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.14` runs `zanadir:0.8.0`.
+changes when you bump it. `v1.15` runs `zanadir:0.9.0`.
