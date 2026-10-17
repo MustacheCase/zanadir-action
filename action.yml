@@ -44,7 +44,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.9.0"
+  image: "docker://mustachecase/zanadir:0.10.0"
   args:
     - "scan"
     - "--dir"
