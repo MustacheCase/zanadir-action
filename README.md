@@ -174,4 +174,4 @@ format. The report says which.
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.17` runs `zanadir:0.11.0`.
+changes when you bump it. `v1.17` runs `zanadir:0.12.0`.
