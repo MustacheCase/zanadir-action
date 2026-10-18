@@ -41,10 +41,19 @@ inputs:
   config:
     description: 'Read settings and custom rules from this YAML file; inputs given here win (optional)'
     required: false
+  required-checks:
+    description: "Read the default branch's required checks: a control enforces only if its check must pass to merge (optional)"
+    required: false
+  token:
+    description: 'Token for reading the merge settings with required-checks; read-only use (optional)'
+    required: false
+    default: ${{ github.token }}
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.10.0"
+  image: "docker://mustachecase/zanadir:0.12.0"
+  env:
+    GITHUB_TOKEN: ${{ inputs.token }}
   args:
     - "scan"
     - "--dir"
@@ -67,3 +76,4 @@ runs:
     - ${{ inputs.enforce == 'true' && '--enforce' || '' }}
     - ${{ inputs.write-baseline == 'true' && '--write-baseline' || '' }}
     - ${{ inputs.fail-on-weakened == 'true' && '--fail-on-weakened' || '' }}
+    - ${{ inputs.required-checks == 'true' && '--required-checks' || '' }}
