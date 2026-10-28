@@ -11,7 +11,7 @@ missing, with concrete suggestions for each.
   with:
     fetch-depth: 0
 
-- uses: mustachecase/zanadir-action@v1.29
+- uses: mustachecase/zanadir-action@v1.30
   with:
     dir: .
 ```
@@ -32,9 +32,10 @@ believes the control is there. The action reports those too:
 ```
 
 `continue-on-error: true`, a scanner that only runs on a schedule, a linter
-that never sees a pull request, `trivy --exit-code 0`, `soft_fail: true`,
-GitLab's `allow_failure` and `when: manual` — all of them used to count as
-covered.
+that never sees a pull request, a scanner that only reports unless told to
+fail (`trivy` without `--exit-code 1`, `grype` without `--fail-on`),
+`soft_fail: true`, GitLab's `allow_failure` and `when: manual` — all of them
+used to count as covered.
 
 A weakened control does not fail the job unless you set `fail-on-weakened`.
 `enforce` on its own still acts only on categories with no tooling at all, so
@@ -51,7 +52,7 @@ branch's rulesets and branch protection, so a control enforces only when its
 check must pass, or when code scanning blocks a merge on its alerts:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.29
+- uses: mustachecase/zanadir-action@v1.30
   with:
     dir: .
     required-checks: true
@@ -102,7 +103,7 @@ rules:
 ```
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.29
+- uses: mustachecase/zanadir-action@v1.30
   with:
     dir: .
     config: .zanadir.yml
@@ -119,7 +120,7 @@ Emit SARIF to a file and hand it to `upload-sarif`, and uncovered categories
 appear in the repository's **Security** tab alongside your other scanners:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.29
+- uses: mustachecase/zanadir-action@v1.30
   with:
     dir: .
     output: sarif
@@ -139,7 +140,7 @@ shell, and redirecting would also capture the debug log into the report.
 `fail-on` blocks only the categories you care about:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.29
+- uses: mustachecase/zanadir-action@v1.30
   with:
     dir: .
     fail-on: SAST,Secrets Detection
@@ -149,7 +150,7 @@ To adopt enforcement on an existing repository, record today's gaps as accepted
 and fail only on new ones:
 
 ```yaml
-- uses: mustachecase/zanadir-action@v1.29
+- uses: mustachecase/zanadir-action@v1.30
   with:
     dir: .
     enforce: true
@@ -174,4 +175,4 @@ format. The report says which.
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.29` runs `zanadir:0.23.0`.
+changes when you bump it. `v1.30` runs `zanadir:0.24.0`.
