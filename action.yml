@@ -51,7 +51,7 @@ inputs:
 
 runs:
   using: "docker"
-  image: "docker://mustachecase/zanadir:0.24.2"
+  image: "docker://mustachecase/zanadir:0.25.0"
   env:
     GITHUB_TOKEN: ${{ inputs.token }}
   args:
