@@ -51,8 +51,8 @@ inputs:
 
 runs:
   using: "docker"
-  # zanadir 0.27.0, by digest: a tag on Docker Hub can be moved, a digest cannot.
-  image: "docker://mustachecase/zanadir@sha256:b4ff6dec2e650c7973ed21446725a549a9069393679f14a6c45a627d3935faf5"
+  # zanadir 0.28.0, by digest: a tag on Docker Hub can be moved, a digest cannot.
+  image: "docker://mustachecase/zanadir@sha256:cdfc42784daed0d708b3c1e351eab6fde266d4c86b9760cdddf26b0d155b03fd"
   env:
     GITHUB_TOKEN: ${{ inputs.token }}
   args:
