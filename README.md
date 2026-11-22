@@ -175,5 +175,5 @@ format. The report says which.
 ## Versioning
 
 Each release pins a specific zanadir image, so the action's behaviour only
-changes when you bump it. `v1.41` runs `zanadir:0.31.0`, pinned by its digest, so
+changes when you bump it. `v1.42` runs `zanadir:0.32.0`, pinned by its digest, so
 the image cannot change under a version either.
